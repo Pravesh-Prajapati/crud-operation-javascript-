@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="text" name="" id="email">
+    <input type="text" name="" id="username">
+    <button onclick="add()">ADD</button>
+    <br/><br />
+
+    <input type="text" name="" id="newemail">
+    <input type="text" name="" id="newusername">
+    <input type="text" name="" id="index">
+    <button onclick="update()">update</button>
+    <br/><br />
+
+    <table border="1" cellpadding="10">
+        <thead>
+            <th>email</th>
+            <th>username</th>
+        </thead>
+        <tbody id="tbody">
+
+        </tbody>
+    </table>
+
+    <script>
+        // ===========setitem
+        let arr = JSON.parse(localStorage.getItem("new")) || [];
+        function add() {
+            let email = document.getElementById("email").value;     
+            let username = document.getElementById("username").value;
+            let tbody = document.getElementById("tbody").value;
+
+            let data = {
+                email,
+                username
+            };
+            arr.push(data);
+            localStorage.setItem("new", JSON.stringify(arr));
+            location.reload();
+        }
+            // ============get item
+            function loaddata() {
+                arr.map((val, index) => {
+                    let tr = document.createElement("tr");
+                    tr.innerHTML = `
+                    <td>${val.email}</td>
+                    <td>${val.username}</td>
+                    <button Onclick="deletedata(${index})"><img src="delete.png"/></button>
+                    <button Onclick="viewdata(${index})">view</button>
+                    `;
+                    tbody.appendChild(tr);
+                });
+                
+            }
+            loaddata();
+            // ===============delete data
+            function deletedata(index) {
+                arr.splice(index, 1);
+                localStorage.setItem("new", JSON.stringify(arr));
+                location.reload();
+            }
+            //=================== update data
+            function viewdata(index) {
+                let data = arr[index];
+                console.log(data);  
+                document.getElementById("newemail").value = data.email;
+                document.getElementById("newusername").value = data.username;
+                document.getElementById("index").value = index;
+            }
+          // ==================
+            function update() {
+                let email = document.getElementById("newemail").value;
+                let username = document.getElementById("newusername").value;
+                let index = document.getElementById("index").value;
+
+                let data={
+                    email,
+                    username,
+                };
+                arr.splice(index ,1,data);
+                localStorage.setItem("new",JSON.stringify(arr));
+                location.reload();
+            }
+    </script>
+</body>
+
+</html>
